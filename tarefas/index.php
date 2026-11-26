@@ -37,7 +37,13 @@ require '../includes/header.php'; ?><div class="head">
                     <td><?= date('d/m/Y', strtotime($t['prazo'])) ?></td>
                     <td><?= $t['prioridade'] ?></td>
                     <td><?= $t['status'] ?></td>
-                    <td><a class="btn gray" href="form.php?id=<?= $t['id'] ?>">Editar</a> <a class="btn red" href="excluir.php?id=<?= $t['id'] ?>">Excluir</a></td>
+                    <td>
+                        <a class="btn gray" href="form.php?id=<?= $t['id'] ?>">Editar</a>
+                        <form method="post" action="excluir.php" style="display:inline">
+                            <input type="hidden" name="id" value="<?= $t['id'] ?>">
+                            <button class="btn red" type="submit" onclick="return confirm('Deseja realmente excluir esta tarefa?');">Excluir</button>
+                        </form>
+                    </td>
                 </tr><?php endforeach; ?>
         </table>
     </div>
