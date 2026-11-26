@@ -1,12 +1,15 @@
 <?php require '../config/database.php';
 $pageTitle = 'Tarefas';
 $status = $_GET['status'] ?? '';
-$sql = 'SELECT * FROM tarefas';
-if ($status !== '') {
-    $sql .= " WHERE status='Pendente'";
+$statuses = ['Pendente', 'Em andamento', 'Concluída'];
+if (in_array($status, $statuses, true)) {
+    $sql = 'SELECT * FROM tarefas WHERE status=? ORDER BY prazo';
+    $tarefas = $pdo->prepare($sql);
+    $tarefas->execute([$status]);
+    $tarefas = $tarefas->fetchAll();
+} else {
+    $tarefas = $pdo->query('SELECT * FROM tarefas ORDER BY prazo')->fetchAll();
 }
-$sql .= ' ORDER BY prazo';
-$tarefas = $pdo->query($sql)->fetchAll();
 require '../includes/header.php'; ?><div class="head">
     <div>
         <h1>Tarefas</h1>
